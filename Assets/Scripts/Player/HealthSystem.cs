@@ -12,6 +12,8 @@ public class HealthSystem : MonoBehaviour
     void Start()
     {
         _currentHealth = _characterData.MaxHealth;
+
+        GetComponent<CharacterCollisionHandler>().OnObstacleHit = TakeDamage;
     }
     #endregion
 

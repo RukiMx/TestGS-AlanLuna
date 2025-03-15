@@ -5,15 +5,15 @@ using UnityEngine;
 public class CharacterMove : MonoBehaviour
 {
     [SerializeField] private CharacterData _characterData;
-    [SerializeField] private SpriteRenderer _avatarRenderer; 
+    [SerializeField] private SpriteRenderer _avatarRenderer;
 
-    
 
     private float _movementInput;
+    private bool _isGrounded;
 
     public Rigidbody2D Rigidbody { get; private set; }
     public Animator Animator { get; private set; }
-    public bool IsGrounded { get; private set; }
+    public bool IsGrounded { get { return _isGrounded; } private set { _isGrounded = value; Animator.SetBool("Grounded", value); } }
 
     #region UNITY METHODS
     private void Awake()
@@ -27,6 +27,9 @@ public class CharacterMove : MonoBehaviour
         // Suscribe to the Input Manager events
         InputManager.Instance.OnMove += HandleMovement;
         InputManager.Instance.OnJump += HandleJump;
+
+        GetComponent<CharacterCollisionHandler>().OnGroundTouch += () => IsGrounded = true ;
+        GetComponent<CharacterCollisionHandler>().OnGroundExit += () => IsGrounded = false;
     }
 
     private void Update()
@@ -39,8 +42,14 @@ public class CharacterMove : MonoBehaviour
     {
         _movementInput = direction;
         Animator.SetFloat("MoveSpeed", Mathf.Abs(direction));
-        bool shouldFlip = direction < 0;
-        _avatarRenderer.flipX = shouldFlip;
+
+        if (direction != 0)
+        {
+            bool shouldFlip = direction < 0;
+
+            _avatarRenderer.flipX = shouldFlip;
+        }
+
     }
 
     private void HandleJump()
@@ -51,5 +60,17 @@ public class CharacterMove : MonoBehaviour
             Animator.SetTrigger("Jump");
             IsGrounded = false;
         }
+    }
+
+    private void OnFloor()
+    {
+        IsGrounded = true;
+
+    }
+
+    private void OnAir()
+    {
+        IsGrounded = false;
+
     }
 }
