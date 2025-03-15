@@ -7,19 +7,19 @@ public class CharacterMove : MonoBehaviour
     [SerializeField] private CharacterData _characterData;
     [SerializeField] private SpriteRenderer _avatarRenderer; 
 
-    public Rigidbody2D _rigidbody { get; private set; }
-    public Animator _animator { get; private set; }
-
+    
 
     private float _movementInput;
 
+    public Rigidbody2D Rigidbody { get; private set; }
+    public Animator Animator { get; private set; }
     public bool IsGrounded { get; private set; }
 
     #region UNITY METHODS
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _animator = _avatarRenderer.GetComponent<Animator>();
+        Rigidbody = GetComponent<Rigidbody2D>();
+        Animator = _avatarRenderer.GetComponent<Animator>();
     }
 
     private void Start()
@@ -31,14 +31,14 @@ public class CharacterMove : MonoBehaviour
 
     private void Update()
     {
-        _rigidbody.velocity = new Vector2(_movementInput * _characterData.Speed, _rigidbody.velocity.y);
+        Rigidbody.velocity = new Vector2(_movementInput * _characterData.Speed, Rigidbody.velocity.y);
     }
     #endregion
 
     private void HandleMovement(float direction)
     {
         _movementInput = direction;
-        _animator.SetFloat("MoveSpeed", Mathf.Abs(direction));
+        Animator.SetFloat("MoveSpeed", Mathf.Abs(direction));
         bool shouldFlip = direction < 0;
         _avatarRenderer.flipX = shouldFlip;
     }
@@ -47,8 +47,8 @@ public class CharacterMove : MonoBehaviour
     {
         if (IsGrounded)
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _characterData.JumpForce);
-            _animator.SetTrigger("Jump");
+            Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, _characterData.JumpForce);
+            Animator.SetTrigger("Jump");
             IsGrounded = false;
         }
     }
