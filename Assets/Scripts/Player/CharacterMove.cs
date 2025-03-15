@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CharacterMove : MonoBehaviour
 {
-    public CharacterData _characterData;
+    [SerializeField] private CharacterData _characterData;
+    [SerializeField] private SpriteRenderer _avatarRenderer; 
+
     public Rigidbody2D _rigidbody { get; private set; }
     public Animator _animator { get; private set; }
 
@@ -17,7 +19,7 @@ public class CharacterMove : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
+        _animator = _avatarRenderer.GetComponent<Animator>();
     }
 
     private void Start()
@@ -37,6 +39,8 @@ public class CharacterMove : MonoBehaviour
     {
         _movementInput = direction;
         _animator.SetFloat("MoveSpeed", Mathf.Abs(direction));
+        bool shouldFlip = direction < 0;
+        _avatarRenderer.flipX = shouldFlip;
     }
 
     private void HandleJump()
