@@ -6,7 +6,7 @@ public class FallingObstacle : MonoBehaviour, IObstacle
 {
     public void Spawn()
     {
-        //Here some configs an spawn time.
+        //Here some configs at spawn time.
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         gameObject.SetActive(true);
     }

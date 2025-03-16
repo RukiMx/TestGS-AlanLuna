@@ -53,7 +53,7 @@ public class PoolManager : MonoBehaviour
         obj.transform.position = position;
         obj.transform.rotation = rotation;
 
-        poolDictionary[tag].Enqueue(obj); // Lo volvemos a poner en la cola
+        poolDictionary[tag].Enqueue(obj);
 
         return obj;
     }
