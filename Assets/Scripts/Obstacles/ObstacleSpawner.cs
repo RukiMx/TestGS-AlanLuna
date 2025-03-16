@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public Vector2 spawnRangeX;
-    public Vector2 spawnRangeY;
+    [SerializeField] private Vector2 _spawnRangeX;
+    [SerializeField] private Vector2 _spawnRangeY;
 
     public float spawnRate = 1.5f;
 
@@ -18,9 +18,9 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void SpawnObstacle()
     {
-        float randomX = Random.Range(spawnRangeX.x, spawnRangeX.y);
-        float randomY = Random.Range(spawnRangeY.x, spawnRangeY.y);
-        Vector3 spawnPosition = new Vector3(randomX, randomY, 0f);
+        float randomPosX = Random.Range(_spawnRangeX.x, _spawnRangeX.y);
+        float randomPosY = Random.Range(_spawnRangeY.x, _spawnRangeY.y);
+        Vector3 spawnPosition = new Vector3(randomPosX, randomPosY, 0f);
 
         PoolManager.Instance.GetObject("Square", spawnPosition, Quaternion.identity).GetComponent<FallingObstacle>().Spawn();//SetActive(true) ;
     }

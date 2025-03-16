@@ -23,7 +23,13 @@ public class HealthSystem : MonoBehaviour
         
         if(_currentHealth <= 0)
         {
-            // Death
+            Dead();
         }
+    }
+
+    public void Dead()
+    {
+        GameEvents.OnPlayerDead?.Invoke();
+        GetComponentInChildren<Animator>().SetTrigger("Dead");
     }
 }
